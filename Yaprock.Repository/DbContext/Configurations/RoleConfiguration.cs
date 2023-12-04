@@ -8,6 +8,10 @@ namespace Yaprock.Repository.DbContext.Configurations
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
+            builder.HasData(
+                 new Role { Id = 1, RoleName = "Admin" },
+                 new Role { Id = 2, RoleName = "User" }
+           );
 
         }
     }
