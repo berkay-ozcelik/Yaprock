@@ -12,7 +12,7 @@ using Yaprock.Repository.DbContext;
 namespace Yaprock.Repository.Migrations
 {
     [DbContext(typeof(YaprockDbContext))]
-    [Migration("20231204135329_init")]
+    [Migration("20231204213258_init")]
     partial class init
     {
         /// <inheritdoc />
