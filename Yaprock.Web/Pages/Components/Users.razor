@@ -1,0 +1,45 @@
+﻿@page "/users"
+@using Yaprock.Core.Entity;
+@using Yaprock.Core.Service;
+@inject IService<User> UserService;
+
+
+<PageTitle>Kullanıcılar</PageTitle>
+
+<h1>Kullanıcılar</h1>
+
+@if (users == null)
+{
+    <p><em>Yükleniyor...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>E-Posta</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Name</td>
+                    <td>@user.Surname</td>
+                    <td>@user.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<User>? users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await UserService.GetAllAsync();
+    }
+}
