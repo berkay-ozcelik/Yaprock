@@ -1,0 +1,106 @@
+﻿@page "/roles"
+@using Yaprock.Core.Entity;
+@using Yaprock.Core.Service;
+@using Yaprock.Web.Components;
+
+@inject IDialogService DialogService
+@inject IService<Role> RoleService;
+
+
+<PageTitle>Yaprock | Roles</PageTitle>
+
+<h1>Roles</h1>
+
+<MudDataGrid Items="@RoleList">
+    <Columns>
+        <PropertyColumn Property="x => x.Id" Title="ID" />
+        <PropertyColumn Property="x => x.RoleName" Title="Role Name" />
+        <TemplateColumn CellClass="d-flex justify-end" @Sortable="false">
+            <CellTemplate>
+                <MudStack Row>
+                    <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" OnClick="(() => EditRoleButtonClick(context.Item))">Edit</MudButton>
+                    <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Warning" OnClick="(() => DeleteRoleButtonClick(context.Item))">Delete</MudButton>
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>
+
+<MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success" OnClick="(() => AddRoleButtonClick())">Add</MudButton>
+
+@code {
+    private IEnumerable<Role> RoleList = new List<Role>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        RoleList = await RoleService.GetAllAsync();
+        RoleList = RoleList.OrderBy(x => x.RoleName);
+    }
+
+    private async void EditRoleButtonClick(Role role)
+    {
+        var dialogParameters = new DialogParameters { ["Entity"] = role };
+
+        var dialog = DialogService.Show<RoleEditPopup>("Edit Role", dialogParameters);
+
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await RoleService.Update(role);
+
+            RoleList = await RoleService.GetAllAsync();
+            RoleList = RoleList.OrderBy(x => x.RoleName);
+
+            StateHasChanged();
+
+
+        }
+
+    }
+
+    private async void DeleteRoleButtonClick(Role role)
+    {
+        var dialog = DialogService.Show<ConfirmDeletePopup>("Delete Role");
+
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await RoleService.RemoveAsync(role);
+
+            RoleList = await RoleService.GetAllAsync();
+            RoleList = RoleList.OrderBy(x => x.RoleName);
+
+            StateHasChanged();
+        }
+    }
+
+    private async void AddRoleButtonClick()
+    {
+        var role = new Role();
+
+        var dialogParameters = new DialogParameters { ["Entity"] = role };
+
+        var dialog = DialogService.Show<RoleEditPopup>("Add Role", dialogParameters);
+
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            try
+            {
+                await RoleService.AddAsync(role);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            RoleList = await RoleService.GetAllAsync();
+            RoleList = RoleList.OrderBy(x => x.RoleName);
+
+            StateHasChanged();
+        }
+    }
+}

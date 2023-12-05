@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yaprock.Repository", "Yapro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yaprock.Service", "Yaprock.Service\Yaprock.Service.csproj", "{8470CE68-ED85-4EE4-B8D0-E4486213CC89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaprock.Web", "Yaprock.Web\Yaprock.Web.csproj", "{BB881B03-9277-46FE-801F-4CC49FFE0239}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yaprock.Web", "Yaprock.Web\Yaprock.Web.csproj", "{BB881B03-9277-46FE-801F-4CC49FFE0239}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

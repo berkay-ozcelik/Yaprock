@@ -1,0 +1,34 @@
+﻿@using Yaprock.Core.Entity;
+@using Yaprock.Core.Service;
+
+
+<MudDialog>
+    <DialogContent>
+        <MudTextField @ref="TF_RoleName" Value="@Entity.RoleName" Label="Role Name" ReadOnly="false" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton OnClick="Edit">Edit</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public Role Entity { get; set; }
+
+    private MudTextField<string> TF_RoleName { get; set; }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void Edit()
+    {
+        Entity.RoleName = TF_RoleName.Value;
+
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+}
+
